@@ -1,0 +1,18 @@
+# Local dependencies and Bundler configuration
+/.bundle/
+/vendor/bundle/
+
+# Environment files and local mise overrides
+.env
+.env.*
+!.env.example
+/mise.local.toml
+/.mise.local.toml
+
+# Generated files
+/coverage/
+/tmp/
+*.log
+
+# macOS metadata
+.DS_Store
