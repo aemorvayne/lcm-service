@@ -1,55 +1,42 @@
 # LCM Service
 
-A minimal Ruby GET endpoint that calculates the lowest common multiple (LCM) of two non-negative integers. Its HTTP response is plain text, never HTML or JSON.
+Give it two numbers and get their least common multiple back. This small Ruby service turns `12` and `18` into a plain-text `36` with a single HTTP request.
 
-## Run locally
+## Try it locally
 
-Install the pinned tools and dependencies:
+With [mise](https://mise.jdx.dev/) installed:
 
-```bash
+```sh
 mise install
 mise run setup
+mise run dev
 ```
 
-Set an example endpoint identifier and start the server:
+In another terminal:
 
-```bash
-EMAIL_ADDRESS='your.name@example.com' PORT=8080 mise run dev
+```sh
+curl 'http://localhost:8080/your_name_example_com?x=12&y=18'
 ```
 
-All characters other than `A-Z`, `a-z`, and `0-9` in `EMAIL_ADDRESS` become underscores in the endpoint path. Use a reserved example address for public demonstrations: this value is reflected in the public URL, so it is not a secret.
+You'll get `36`. Non-negative integers are accepted; zero returns `0`. Missing, invalid, or repeated parameters return `NaN`.
 
-```bash
-curl -i 'http://localhost:8080/your_name_example_com?x=12&y=18'
+`PORT` defaults to `8080`. `EMAIL_ADDRESS` sets the endpoint name, replacing characters outside `A–Z`, `a–z`, and `0–9` with underscores. Its default is `your.name@example.com`; keep using an example address for public demos, since it appears in the URL.
+
+## Run the checks
+
+```sh
+mise run check
 ```
 
-Response HTTP status: `200`, `Content-Type: text/plain; charset=utf-8` and body exactly `36` (no newline).
+This runs the tests and privacy checks.
 
-An invalid number, duplicate `x` or `y`, or a missing argument produces the exact text `NaN`. Valid zero values return `0`.
+## Run with Docker
 
-Other paths return `404`. Methods other than `GET` return `405` with `Allow: GET` at the configured endpoint. Responses use plain text; `HEAD` responses have no body.
-
-## Deploy with Docker
-
-Connect a Docker-capable host to this repository and build its root `Dockerfile`. Set `EMAIL_ADDRESS` to a public example identifier such as `your.name@example.com`. The application reads the host's `PORT` and defaults to `8080`. Configure the health check to use the resulting endpoint with valid query parameters, for example `/your_name_example_com?x=12&y=18`.
-
-No hosted deployment URL is configured yet.
-
-## Test
-
-```bash
-mise run test
-mise run privacy
+```sh
+docker build -t lcm-service .
+docker run --rm -p 8080:8080 lcm-service
 ```
 
-Bundler installs `webrick` and the test dependency `minitest`. The tests cover LCM calculations, invalid and missing inputs, custom and default email paths, exact HTTP responses, and unsupported methods. The Docker image installs only runtime dependencies from `Gemfile.lock`.
+On a container host, build the root `Dockerfile` and use `/your_name_example_com?x=12&y=18` as the health check when using the default endpoint.
 
-The mise tasks keep Bundler and subprocesses on the pinned Ruby. The container uses the same pinned Ruby version.
-
-## Public repository hygiene
-
-`mise run setup` enables local Git hooks. The commit hook scans staged changes with pinned Gitleaks rules; the push hook and CI also scan the complete Git history. Findings are redacted. The rules detect supported credential formats, non-example email addresses, and private file paths; manual review remains necessary for personal data, metadata, and identifying prose.
-
-Keep original briefs, supplied contact data, credentials, environment files, private notes, and unsanitized backups outside the repository and Docker build context. Public fixtures use reserved example domains. Store deployment secrets in the hosting provider's secret store.
-
-Related project: [Marketline](https://github.com/aemorvayne/marketline).
+Also built with Ruby: [Marketline](https://github.com/aemorvayne/marketline), a stock explorer.
