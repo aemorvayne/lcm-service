@@ -34,3 +34,11 @@ secrets.*
 id_rsa
 id_ed25519
 *.bundle
+*.zip
+*.tar
+*.gz
+*.7z
+*.sqlite
+*.sqlite3
+*.db
+*.dump

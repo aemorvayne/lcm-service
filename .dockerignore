@@ -88,3 +88,17 @@ log
 **/log
 vendor/bundle
 **/vendor/bundle
+*.tar
+**/*.tar
+*.gz
+**/*.gz
+*.7z
+**/*.7z
+*.sqlite
+**/*.sqlite
+*.sqlite3
+**/*.sqlite3
+*.db
+**/*.db
+*.dump
+**/*.dump

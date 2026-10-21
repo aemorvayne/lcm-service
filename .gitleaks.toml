@@ -14,7 +14,7 @@ regexes = ['''(?i)@(?:[a-z0-9-]+\.)*example\.(?:com|net|org)$''', '''(?i)@users\
 [[rules]]
 id = "private-file"
 description = "Private documents and credentials must stay outside public repositories"
-path = '''(?i)(^|/)(task[^/]*\.(txt|pdf|zip)|puzzle[^/]*\.txt|users\.json|\.env(\.[^/]*)?|[^/]*\.(key|pem|p12|pfx|kdbx)|id_(rsa|ed25519)|credentials(\.[^/]*)?|secrets(\.[^/]*)?|(?:private|confidential)(/.*)?)$'''
+path = '''(?i)(^|/)(task[^/]*\.(txt|pdf|zip)|puzzle[^/]*\.txt|users\.json|\.env(\.[^/]*)?|[^/]*\.(key|pem|p12|pfx|kdbx|bundle|zip|tar|gz|7z|sqlite|sqlite3|db|dump)|id_(rsa|ed25519)|credentials(\.[^/]*)?|secrets(\.[^/]*)?|(?:private|confidential)(/.*)?)$'''
 
 [[rules.allowlists]]
 paths = ['''(^|/)\.env\.example$''']
