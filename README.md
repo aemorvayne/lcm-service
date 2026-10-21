@@ -1,22 +1,23 @@
-# Ruby LCM HTTP Service
+# LCM Service
 
 A minimal Ruby GET endpoint that calculates the lowest common multiple (LCM) of two non-negative integers. Its HTTP response is plain text, never HTML or JSON.
 
 ## Run locally
 
-Ruby 3.3 or newer is recommended. With Ruby selected in mise, install dependencies:
+Install the pinned tools and dependencies:
 
 ```bash
-mise exec -- bundle install
+mise install
+mise run setup
 ```
 
-Set your email and start the server:
+Set an example endpoint identifier and start the server:
 
 ```bash
-EMAIL_ADDRESS='your.name@example.com' PORT=8080 mise exec -- bundle exec ruby server.rb
+EMAIL_ADDRESS='your.name@example.com' PORT=8080 mise run dev
 ```
 
-Use **your own email address** for `EMAIL_ADDRESS`. All characters other than `A-Z`, `a-z`, and `0-9` become underscores in the endpoint path.
+All characters other than `A-Z`, `a-z`, and `0-9` in `EMAIL_ADDRESS` become underscores in the endpoint path. Use a reserved example address for public demonstrations: this value is reflected in the public URL, so it is not a secret.
 
 ```bash
 curl -i 'http://localhost:8080/your_name_example_com?x=12&y=18'
@@ -30,22 +31,25 @@ Other paths return `404`. Methods other than `GET` return `405` with `Allow: GET
 
 ## Deploy with Docker
 
-1. Upload this directory as a GitHub repository (with `Dockerfile`, `Gemfile`, `Gemfile.lock` and `server.rb` at the root).
-2. Connect a Docker-capable host to this repository and build the root Dockerfile.
-3. Under service **Variables**, set `EMAIL_ADDRESS` to your actual email address, e.g. `your.name@example.com`. The application reads the `PORT` variable provided by the host, and defaults to 8080.
-4. Under service **Settings > Networking**, choose **Generate Domain** to expose the service publicly.
-5. For a service hosted at `https://lcm.example.com`, the example endpoint is:
+Connect a Docker-capable host to this repository and build its root `Dockerfile`. Set `EMAIL_ADDRESS` to a public example identifier such as `your.name@example.com`. The application reads the host's `PORT` and defaults to `8080`. Configure the health check to use the resulting endpoint with valid query parameters, for example `/your_name_example_com?x=12&y=18`.
 
-   `https://lcm.example.com/your_name_example_com?x=12&y=18`
-
-The host/domain above is an **example**, not a deployed URL.
+No hosted deployment URL is configured yet.
 
 ## Test
 
 ```bash
-mise exec -- bundle exec ruby test/test_server.rb
+mise run test
+mise run privacy
 ```
 
 Bundler installs `webrick` and the test dependency `minitest`. The tests cover LCM calculations, invalid and missing inputs, custom and default email paths, exact HTTP responses, and unsupported methods. The Docker image installs only runtime dependencies from `Gemfile.lock`.
 
-If Ruby is already active in your shell, you can omit `mise exec --` from these commands.
+The mise tasks keep Bundler and subprocesses on the pinned Ruby. The container uses the same pinned Ruby version.
+
+## Public repository hygiene
+
+`mise run setup` enables local Git hooks. The commit hook scans staged changes with pinned Gitleaks rules; the push hook and CI also scan the complete Git history. Findings are redacted. The rules detect supported credential formats, non-example email addresses, and private file paths; manual review remains necessary for personal data, metadata, and identifying prose.
+
+Keep original briefs, supplied contact data, credentials, environment files, private notes, and unsanitized backups outside the repository and Docker build context. Public fixtures use reserved example domains. Store deployment secrets in the hosting provider's secret store.
+
+Related project: [Marketline](https://github.com/aemorvayne/marketline).

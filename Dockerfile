@@ -1,4 +1,4 @@
-FROM ruby:3.3-alpine
+FROM ruby:4.0.7-alpine
 
 WORKDIR /app
 ENV BUNDLE_WITHOUT=test \

@@ -1,0 +1,27 @@
+[tools]
+ruby = "4.0.7"
+gitleaks = "8.30.1"
+
+[tasks.setup]
+description = "Install dependencies and enable local privacy hooks"
+run = ["\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle install", "git config core.hooksPath .githooks"]
+
+[tasks.dev]
+description = "Start the LCM service"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec ruby server.rb"
+
+[tasks.test]
+description = "Run unit and HTTP integration tests"
+run = "\"{{ tools.ruby.path }}/bin/ruby\" bin/run.rb bundle exec ruby test/test_server.rb"
+
+[tasks.privacy-staged]
+description = "Scan staged changes for secrets, personal contacts, and private files"
+run = "gitleaks git --staged --redact --no-banner --ignore-gitleaks-allow ."
+
+[tasks.privacy]
+description = "Scan complete Git history and staged changes before publication"
+run = ["gitleaks git --log-opts=--all --redact --no-banner --ignore-gitleaks-allow .", "mise run privacy-staged"]
+
+[tasks.check]
+description = "Run tests and privacy checks"
+depends = ["test", "privacy"]

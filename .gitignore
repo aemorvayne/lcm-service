@@ -1,18 +1,36 @@
-# Local dependencies and Bundler configuration
 /.bundle/
 /vendor/bundle/
-
-# Environment files and local mise overrides
 .env
 .env.*
 !.env.example
 /mise.local.toml
 /.mise.local.toml
-
-# Generated files
 /coverage/
 /tmp/
 *.log
-
-# macOS metadata
 .DS_Store
+task*.txt
+Task*.txt
+puzzle*.txt
+Puzzle*.txt
+task*.pdf
+Task*.pdf
+task*.zip
+Task*.zip
+users.json
+mise.local.toml
+.mise.local.toml
+private/
+confidential/
+credentials
+credentials.*
+secrets
+secrets.*
+*.key
+*.pem
+*.p12
+*.pfx
+*.kdbx
+id_rsa
+id_ed25519
+*.bundle
