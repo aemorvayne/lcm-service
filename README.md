@@ -37,6 +37,6 @@ docker build -t lcm-service .
 docker run --rm -p 8080:8080 lcm-service
 ```
 
-On a container host, build the root `Dockerfile` and use `/your_name_example_com?x=12&y=18` as the health check when using the default endpoint.
+To host it on [Render](https://dashboard.render.com/web/new), create a web service from this GitHub repository's `main` branch, choose **Docker** and the **Free** plan, and use `/your_name_example_com?x=12&y=18` as the health check. Render supplies `PORT` automatically. Free services sleep after 15 minutes of inactivity, so the first request may take a moment.
 
 Also built with Ruby: [Marketline](https://github.com/aemorvayne/marketline), a stock explorer.
